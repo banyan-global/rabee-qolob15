@@ -1144,7 +1144,7 @@ textarea::placeholder,input[type=text]::placeholder{
     </div>
   </div>
 
-  <form id="surveyForm">
+  <form id="surveyForm" action="https://script.google.com/macros/s/AKfycbya9oCAFQmyBppolvJZjqBE2Lk16IhKhBilG3lRlLOW69foXvWCzjSRZpmIruTzUP_L1Q/exec" method="POST" target="submissionFrame" accept-charset="UTF-8">
     <input type="hidden" id="hiddenName" name="اسم الطالب" value="">
     <input type="hidden" id="hiddenComplex" name="المجمع" value="">
 <section class="section">
@@ -1155,10 +1155,10 @@ textarea::placeholder,input[type=text]::placeholder{
       <div class="question">
         <label class="question-title">بشكل عام، كيف كان برنامج ربيع القلوب معك؟ <span class="req">*</span></label>
         <div class="segmented four" id="overallRating">
-          <label class="seg"><input required type="radio" name="التقييم العام" value="4 - ممتاز جدًا">ممتاز جدًا</label>
-          <label class="seg"><input type="radio" name="التقييم العام" value="3 - ممتاز">ممتاز</label>
-          <label class="seg"><input type="radio" name="التقييم العام" value="2 - جيد">جيد</label>
-          <label class="seg"><input type="radio" name="التقييم العام" value="1 - مقبول">مقبول</label>
+          <label class="seg"><input required type="radio" name="التقييم العام" value="ممتاز جدًا">ممتاز جدًا</label>
+          <label class="seg"><input type="radio" name="التقييم العام" value="ممتاز">ممتاز</label>
+          <label class="seg"><input type="radio" name="التقييم العام" value="جيد">جيد</label>
+          <label class="seg"><input type="radio" name="التقييم العام" value="مقبول">مقبول</label>
         </div>
         <button class="note-toggle" type="button" data-note-target="overallLowNote">
           <span class="plus">＋</span>
@@ -1317,6 +1317,7 @@ textarea::placeholder,input[type=text]::placeholder{
 
 </section>
   </form>
+  <iframe name="submissionFrame" id="submissionFrame" style="display:none" title="إرسال الرد"></iframe>
 </div>
 
 <section class="success" id="success">
@@ -1728,12 +1729,13 @@ wizardSections.forEach((section,i)=>{
   }
 });
 
-const GOOGLE_SHEETS_ENDPOINT="https://script.google.com/macros/s/AKfycbya9oCAFQmyBppolvJZjqBE2Lk16IhKhBilG3lRlLOW69foXvWCzjSRZpmIruTzUP_L1Q/exec";
+let submissionPending=false;
+let submissionTimer=null;
+let submitBtnRef=null;
+let submitBtnOldText="";
 
-form.addEventListener("submit",async e=>{
-  e.preventDefault();
-
-  // مزامنة بيانات البداية
+form.addEventListener("submit",e=>{
+  // مزامنة بيانات البداية قبل الإرسال
   document.getElementById("hiddenName").value=
     document.getElementById("welcomeName").value.trim();
 
@@ -1742,49 +1744,60 @@ form.addEventListener("submit",async e=>{
 
   // التحقق من جميع الأقسام
   for(const section of wizardSections){
-    if(!sectionIsValid(section)) return;
+    if(!sectionIsValid(section)){
+      e.preventDefault();
+      return;
+    }
   }
 
-  const submitBtn=form.querySelector('.section.active .next-btn');
-  const oldText=submitBtn ? submitBtn.textContent : "";
+  submitBtnRef=form.querySelector('.section.active .next-btn');
+  submitBtnOldText=submitBtnRef ? submitBtnRef.textContent : "";
 
-  if(submitBtn){
-    submitBtn.disabled=true;
-    submitBtn.textContent="جاري حفظ الرد...";
+  if(submitBtnRef){
+    submitBtnRef.disabled=true;
+    submitBtnRef.textContent="جاري حفظ الرد...";
   }
 
-  try {
-    const formData=new FormData(form);
-    const payload={};
+  submissionPending=true;
 
-    for(const [key,value] of formData.entries()){
-      payload[key]=value;
+  clearTimeout(submissionTimer);
+  submissionTimer=setTimeout(()=>{
+    if(!submissionPending) return;
+
+    submissionPending=false;
+    if(submitBtnRef){
+      submitBtnRef.disabled=false;
+      submitBtnRef.textContent=submitBtnOldText || "إرسال التقييم";
     }
 
-    // إرسال مباشر إلى Google Apps Script.
-    // لا نرسل أي بيانات تقنية غير إجابات الطالب.
-    await fetch(GOOGLE_SHEETS_ENDPOINT,{
-      method:"POST",
-      mode:"no-cors",
-      headers:{
-        "Content-Type":"text/plain;charset=utf-8"
-      },
-      body:JSON.stringify(payload)
-    });
+    alert("لم يصل تأكيد حفظ الرد من Google Sheets. حاول مرة أخرى، وإذا تكررت المشكلة راجع عمليات التنفيذ في Apps Script.");
+  },30000);
 
+  // لا نستخدم fetch هنا.
+  // المتصفح سيرسل النموذج مباشرة إلى Apps Script داخل iframe مخفي.
+});
+
+window.addEventListener("message",event=>{
+  const data=event.data;
+
+  if(!submissionPending || !data || data.source!=="rabee-qolob15") return;
+
+  submissionPending=false;
+  clearTimeout(submissionTimer);
+
+  if(data.ok===true){
     surveyArea.style.display="none";
     document.getElementById("success").style.display="block";
     window.scrollTo({top:0,behavior:"smooth"});
-
-  } catch(err) {
-    console.error(err);
-    alert("تعذر إرسال التقييم الآن. تأكد من اتصال الإنترنت ثم حاول مرة أخرى.");
-
-    if(submitBtn){
-      submitBtn.disabled=false;
-      submitBtn.textContent=oldText || "إرسال التقييم";
-    }
+    return;
   }
+
+  if(submitBtnRef){
+    submitBtnRef.disabled=false;
+    submitBtnRef.textContent=submitBtnOldText || "إرسال التقييم";
+  }
+
+  alert("لم يتم حفظ الرد: " + (data.error || "حدث خطأ غير معروف."));
 });
 </script>
 </body>
