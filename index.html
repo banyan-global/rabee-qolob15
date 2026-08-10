@@ -1147,61 +1147,62 @@ textarea::placeholder,input[type=text]::placeholder{
   <form id="surveyForm">
     <input type="hidden" id="hiddenName" name="اسم الطالب" value="">
     <input type="hidden" id="hiddenComplex" name="المجمع" value="">
-<section class="section">
+
+    <section class="section">
       <span class="section-label">القسم الأول</span>
-      <h2 class="section-title">البرنامج العام</h2>
-      <p class="section-desc">قيّم كل جزء حسب تجربتك فيه.</p>
+      <h2 class="section-title">تجربتك في البرنامج</h2>
+      <p class="section-desc">أربع تقييمات سريعة فقط.</p>
 
       <div class="question">
-        <label class="question-title">بشكل عام، كيف كان برنامج ربيع القلوب معك؟ <span class="req">*</span></label>
-        <div class="segmented four" id="overallRating">
+        <label class="question-title">بشكل عام، كيف كان ربيع القلوب معك؟ <span class="req">*</span></label>
+        <div class="segmented four">
           <label class="seg"><input required type="radio" name="التقييم العام" value="ممتاز جدًا">ممتاز جدًا</label>
           <label class="seg"><input type="radio" name="التقييم العام" value="ممتاز">ممتاز</label>
           <label class="seg"><input type="radio" name="التقييم العام" value="جيد">جيد</label>
           <label class="seg"><input type="radio" name="التقييم العام" value="مقبول">مقبول</label>
         </div>
-        <button class="note-toggle" type="button" data-note-target="overallLowNote">
+
+        <button class="note-toggle" type="button" data-note-target="noteOverall">
           <span class="plus">＋</span>
           <span class="note-toggle-text">إضافة ملاحظة</span>
           <span class="optional">(اختياري)</span>
         </button>
-        <div class="low-note" id="overallLowNote">
-          <label>ملاحظتك على البرنامج بشكل عام <span class="optional">(اختياري)</span></label>
+        <div class="low-note" id="noteOverall">
           <textarea name="ملاحظة على التقييم العام" placeholder="اكتب ملاحظتك باختصار..."></textarea>
         </div>
       </div>
 
       <div id="programRatings"></div>
-    
+
       <div class="wizard-nav">
-        <span class="step-counter">القسم 1 من 7</span>
+        <span class="step-counter">القسم 1 من 3</span>
         <div class="nav-group">
           <button type="button" class="wizard-btn prev-btn">السابق</button>
           <button type="button" class="wizard-btn primary next-btn">التالي</button>
         </div>
       </div>
-
-</section>
+    </section>
 
     <section class="section">
       <span class="section-label">القسم الثاني</span>
-      <h2 class="section-title">وش أثر ربيع القلوب عليك؟</h2>
-      <p class="section-desc">قيّم الأشياء اللي حسّيت أن البرنامج فعلاً ساعدك فيها.</p>
+      <h2 class="section-title">وش استفدت؟</h2>
+      <p class="section-desc">نقيس أثر البرنامج عليك في أربع نقاط فقط.</p>
+
       <div id="impactRatings"></div>
-    
+
       <div class="wizard-nav">
-        <span class="step-counter">القسم 2 من 7</span>
+        <span class="step-counter">القسم 2 من 3</span>
         <div class="nav-group">
           <button type="button" class="wizard-btn prev-btn">السابق</button>
           <button type="button" class="wizard-btn primary next-btn">التالي</button>
         </div>
       </div>
+    </section>
 
-</section>
-<section class="section">
-      <span class="section-label">القسم الثالث</span>
-      <h2 class="section-title">المسار المهاري</h2>
-      <p class="section-desc">اختر المسار الذي شاركت فيه، وبعدها قيّمه بسرعة.</p>
+    <section class="section">
+      <span class="section-label">القسم الأخير</span>
+      <h2 class="section-title">المسار ورأيك الأخير</h2>
+      <p class="section-desc">باقي أسئلة بسيطة وننتهي 🎉</p>
 
       <div class="question">
         <label class="question-title">أي مسار مهاري شاركت فيه؟ <span class="req">*</span></label>
@@ -1209,73 +1210,9 @@ textarea::placeholder,input[type=text]::placeholder{
       </div>
 
       <div class="conditional" id="skillBlock">
-        <div class="sub-title" id="skillTitle">تقييم المسار</div>
         <div id="skillRatings"></div>
-
-        <div class="subsection">
-          <div class="sub-title" id="trainerTitle">تقييم المدرب</div>
-          <div id="trainerRatings"></div>
-        </div>
-
-        <div class="question">
-          <label class="question-title">مهارة واحدة أصبحت تستطيع تطبيقها <span class="optional">(اختياري)</span></label>
-          <input id="skillLearnedInput" type="text" name="مهارة تعلمتها" placeholder="اكتب مهارة تعلمتها من المسار">
-      <span class="skill-hint" id="skillLearnedHint"></span>
-        </div>
+        <div id="trainerRatings"></div>
       </div>
-    
-      <div class="wizard-nav">
-        <span class="step-counter">القسم 4 من 7</span>
-        <div class="nav-group">
-          <button type="button" class="wizard-btn prev-btn">السابق</button>
-          <button type="button" class="wizard-btn primary next-btn">التالي</button>
-        </div>
-      </div>
-
-</section>
-
-    <section class="section">
-      <span class="section-label">القسم الرابع</span>
-      <h2 class="section-title">الأثر الإيماني</h2>
-      <p class="section-desc">قيّم أثر اللقاءات الإيمانية عليك.</p>
-
-      <div class="question">
-        <label class="question-title">اذكر اسمًا من أسماء الله تعلمته، وشيئًا واحدًا استفدته منه <span class="optional">(اختياري)</span></label>
-        <textarea name="أثر أسماء الله" placeholder="إجابة قصيرة تكفي..."></textarea>
-      </div>
-
-      <div id="faithRatings"></div>
-    
-      <div class="wizard-nav">
-        <span class="step-counter">القسم 5 من 7</span>
-        <div class="nav-group">
-          <button type="button" class="wizard-btn prev-btn">السابق</button>
-          <button type="button" class="wizard-btn primary next-btn">التالي</button>
-        </div>
-      </div>
-
-</section>
-
-    <section class="section">
-      <span class="section-label">القسم الخامس</span>
-      <h2 class="section-title">فريق العمل</h2>
-      <p class="section-desc">قيّم تعامل المعلمين والمشرفين معك.</p>
-      <div id="teamRatings"></div>
-    
-      <div class="wizard-nav">
-        <span class="step-counter">القسم 6 من 7</span>
-        <div class="nav-group">
-          <button type="button" class="wizard-btn prev-btn">السابق</button>
-          <button type="button" class="wizard-btn primary next-btn">التالي</button>
-        </div>
-      </div>
-
-</section>
-
-    <section class="section">
-      <span class="section-label">القسم الأخير</span>
-      <h2 class="section-title">رأيك الأخير</h2>
-      <p class="section-desc">باقي سؤالان وننتهي 🎉</p>
 
       <div class="question">
         <label class="question-title">لو رجع ربيع القلوب مرة ثانية، هل تشارك؟ <span class="req">*</span></label>
@@ -1288,34 +1225,25 @@ textarea::placeholder,input[type=text]::placeholder{
       </div>
 
       <div class="question">
-        <label class="question-title">لو تقدر تطور شيء واحد في البرنامج، ماذا تختار؟ <span class="req">*</span></label>
+        <label class="question-title">وش أكثر شيء يحتاج تطوير؟ <span class="req">*</span></label>
         <div class="choice-list" id="priorityChoices"></div>
-      </div>
-
-      <div class="development-detail" id="developmentDetail">
-        <span class="selected-dev" id="selectedDevelopment"></span>
-        <label class="question-title">وش الشيء اللي تتمنى يتطور في هذا الجانب؟ <span class="optional">(اختياري)</span></label>
-        <textarea name="تفصيل جانب التطوير" placeholder="مثال: وش تتمنى نضيف؟ وش نخفف؟ وش نغيّر؟"></textarea>
       </div>
 
       <div class="question">
         <label class="question-title">عندك ملاحظة أخيرة؟ <span class="optional">(اختياري)</span></label>
-        <textarea name="ملاحظات واقتراحات" placeholder="اكتب أي ملاحظة أو فكرة تحب توصلها لفريق البرنامج..."></textarea>
+        <textarea name="ملاحظات واقتراحات" placeholder="اكتب أي اقتراح أو ملاحظة تحب توصلها لفريق البرنامج..."></textarea>
       </div>
 
-      <div class="privacy">♡ الاسم اختياري، والمهم أن تأخذ راحتك في الإجابة. تُحفظ الإجابات مباشرة في ملف التقييم لتطوير البرنامج.</div>
+      <div class="privacy">♡ الاسم اختياري، وإجابتك تساعدنا نطور ربيع القلوب.</div>
 
-      
-    
       <div class="wizard-nav">
-        <span class="step-counter">القسم 7 من 7</span>
+        <span class="step-counter">القسم 3 من 3</span>
         <div class="nav-group">
           <button type="button" class="wizard-btn prev-btn">السابق</button>
-          <button type="button" class="wizard-btn primary next-btn">التالي</button>
+          <button type="submit" class="wizard-btn primary next-btn">إرسال التقييم</button>
         </div>
       </div>
-
-</section>
+    </section>
   </form>
 </div>
 
@@ -1329,13 +1257,9 @@ textarea::placeholder,input[type=text]::placeholder{
 </main>
 
 <script>
+const GOOGLE_SHEETS_ENDPOINT="https://script.google.com/macros/s/AKfycbya9oCAFQmyBppolvJZjqBE2Lk16IhKhBilG3lRlLOW69foXvWCzjSRZpmIruTzUP_L1Q/exec";
+
 const qualityScale=[
-  ["ممتاز جدًا","ممتاز جدًا"],
-  ["ممتاز","ممتاز"],
-  ["جيد","جيد"],
-  ["مقبول","مقبول"]
-];
-const impactScale=[
   ["ممتاز جدًا","ممتاز جدًا"],
   ["ممتاز","ممتاز"],
   ["جيد","جيد"],
@@ -1344,52 +1268,32 @@ const impactScale=[
 
 const programItems=[
   ["📖","البرنامج القرآني","الحفظ والمراجعة والتسميع في الحلقة."],
-  ["♡","اللقاءات الإيمانية","اللقاءات اللي تكلمنا فيها عن محبة الله وأسماء الله وعظمته."],
-  ["✦","المسارات المهارية","الدورات اللي تعلمت فيها مهارة مثل التصميم أو الإلقاء أو الإنجليزي أو الذكاء الاصطناعي."],
-  ["⚡","التحديات الأسرية","المسابقات والتحديات اللي تتنافس فيها الأسر مع بعض."],
-  ["⚽","الدوري والأنشطة الرياضية","المباريات والأنشطة الرياضية والمنافسات بين الطلاب."]
+  ["♡","اللقاءات الإيمانية","اللقاءات عن محبة الله وأسمائه وعظمته."],
+  ["⚡","التحديات الأسرية","المنافسات والتحديات بين الأسر."]
 ];
 
 const impactItems=[
-  ["⌛","استفدت من وقت الإجازة","البرنامج ساعدني أقضي وقتي في شيء نافع وممتع."],
-  ["📖","زاد حماسي للقرآن","صرت أكثر رغبة في الحفظ والمراجعة والاستمرار مع القرآن."],
-  ["♡","عرفت الله وأحببته أكثر","اللقاءات الإيمانية ساعدتني أعرف أكثر عن الله وأسمائه ومحبته."],
-  ["⚙","تعلمت مهارة جديدة","خرجت من المسار المهاري بشيء جديد أقدر أستخدمه أو أطبقه."],
-  ["⚡","زاد حماسي وتعاوني مع مجموعتي","التحديات والأنشطة خلتني أشارك وأتعاون أكثر مع زملائي."],
-  ["✦","جمعت بين الفائدة والمتعة","حسّيت أن البرنامج كان مفيدًا وفي نفس الوقت ممتعًا."]
-];
-
-const mainChoices=[
-  ["📖","البرنامج القرآني","الحفظ والمراجعة والارتباط بالقرآن"],
-  ["♡","اللقاءات الإيمانية","معرفة الله ومحبته"],
-  ["✦","المسارات المهارية","مهارات جديدة وتطبيق عملي"],
-  ["⚡","التحديات الأسرية","التنافس والتعاون"],
-  ["⚽","الدوري والأنشطة الرياضية","الحركة والمنافسة"],
+  ["📖","زاد حماسي للقرآن","صرت أكثر رغبة في الحفظ والمراجعة."],
+  ["♡","عرفت الله وأحببته أكثر","اللقاءات ساعدتني أعرف أكثر عن الله وأسمائه."],
+  ["⚙","تعلمت مهارة جديدة","خرجت بمهارة أقدر أستخدمها."],
+  ["⌛","استفدت من وقت الإجازة","قضيت وقتًا نافعًا وممتعًا."]
 ];
 
 const tracks=[
   ["◉","صناعة المحتوى","تصوير • مونتاج • صناعة مقاطع"],
   ["A","أساسيات الإنجليزية","كلمات وجمل بسيطة للمبتدئين"],
   ["◈","الإلقاء والخطابة","الثقة • ترتيب الكلام • الوقوف أمام الناس"],
-  ["✦","التصميم الجرافيكي","تصميم منشورات وإعلانات باستخدام Canva"],
-  ["⌘","الذكاء الاصطناعي","استخدام الذكاء الاصطناعي وبرمجة صفحات بسيطة"]
+  ["✦","التصميم الجرافيكي","التصميم باستخدام Canva"],
+  ["⌘","الذكاء الاصطناعي","الذكاء الاصطناعي وبرمجة صفحات بسيطة"]
 ];
 
 const priorities=[
-  ["⚽","زيادة الأنشطة الرياضية والترفيهية",""],
-  ["✦","مسارات مهارية أعمق وأكثر تطبيقًا",""],
-  ["♡","لقاءات إيمانية أكثر تفاعلًا",""],
-  ["📖","تطوير البرنامج القرآني",""],
-  ["⚡","تحديات أسرية أقوى وأكثر حماسًا",""],
-  ["⌚","تنظيم وجدول أكثر مرونة ووضوحًا",""],
-  ["↗","رحلات وتجارب خارجية أكثر",""],
-  ["＋","اقتراح آخر",""]
-];
-
-const teamItems=[
-  ["📖","معلمو الحلقة القرآنية","تعامل المعلم معك ومتابعته لك في الحلقة."],
-  ["◆","المشرفون","تعامل المشرفين وتنظيمهم ومساعدتهم لك."],
-  ["✦","مقدمو اللقاءات والبرامج","وضوح الشرح وطريقة تقديم اللقاءات."]
+  ["📖","البرنامج القرآني",""],
+  ["♡","اللقاءات الإيمانية",""],
+  ["✦","المسارات المهارية",""],
+  ["⚡","التحديات والأنشطة",""],
+  ["⌚","التنظيم والجدول",""],
+  ["＋","شيء آخر",""]
 ];
 
 function ratingCard(icon,title,desc,scale,prefix,notePrompt="عندك ملاحظة؟"){
@@ -1408,21 +1312,6 @@ function ratingCard(icon,title,desc,scale,prefix,notePrompt="عندك ملاحظ
   const scaleBox=document.createElement("div");
   scaleBox.className="rating-scale";
 
-  const noteId="note-"+Math.random().toString(36).slice(2,10);
-  const noteToggle=document.createElement("button");
-  noteToggle.type="button";
-  noteToggle.className="note-toggle";
-  noteToggle.setAttribute("data-note-target",noteId);
-  noteToggle.innerHTML=`<span class="plus">＋</span>
-    <span class="note-toggle-text">إضافة ملاحظة</span>
-    <span class="optional">(اختياري)</span>`;
-
-  const note=document.createElement("div");
-  note.className="low-note";
-  note.id=noteId;
-  note.innerHTML=`<label>${notePrompt} <span class="optional">(اختياري)</span></label>
-    <textarea name="ملاحظة - ${prefix} - ${title}" placeholder="اكتب ملاحظتك باختصار..."></textarea>`;
-
   scale.forEach(([value,label],i)=>{
     const item=document.createElement("label");
     item.className="rate";
@@ -1430,135 +1319,97 @@ function ratingCard(icon,title,desc,scale,prefix,notePrompt="عندك ملاحظ
     input.type="radio";
     input.name=`${prefix} - ${title}`;
     input.value=value;
-    if(i===0)input.required=true;
-    input.addEventListener("change",updateProgress);
+    if(i===0) input.required=true;
     item.append(input,document.createTextNode(label));
     scaleBox.appendChild(item);
   });
 
-  card.append(scaleBox,noteToggle,note);
+  const noteId="note-"+Math.random().toString(36).slice(2,10);
+  const toggle=document.createElement("button");
+  toggle.type="button";
+  toggle.className="note-toggle";
+  toggle.dataset.noteTarget=noteId;
+  toggle.innerHTML='<span class="plus">＋</span><span class="note-toggle-text">إضافة ملاحظة</span><span class="optional">(اختياري)</span>';
+
+  const note=document.createElement("div");
+  note.className="low-note";
+  note.id=noteId;
+  note.innerHTML=`<textarea name="ملاحظة - ${prefix} - ${title}" placeholder="${notePrompt}"></textarea>`;
+
+  card.append(scaleBox,toggle,note);
   return card;
 }
 
 function renderRatings(rootId,items,scale,prefix,notePrompt){
   const root=document.getElementById(rootId);
-  items.forEach(item=>{
-    const [icon,title,desc=""]=item;
+  items.forEach(([icon,title,desc])=>{
     root.appendChild(ratingCard(icon,title,desc,scale,prefix,notePrompt));
   });
 }
 
-renderRatings("programRatings",programItems,qualityScale,"تقييم الفقرات","عندك ملاحظة على هذا الجزء؟");
-renderRatings("impactRatings",impactItems,impactScale,"أثر البرنامج","إذا تحب، اكتب لنا وش اللي خلا هذا الأثر أقوى أو أضعف عندك.");
-
-function renderList(rootId,name,items,required=true){
+function renderList(rootId,name,items){
   const root=document.getElementById(rootId);
   items.forEach(([icon,title,sub],i)=>{
     const label=document.createElement("label");
     label.className="row-choice";
     const input=document.createElement("input");
-    input.type="radio";input.name=name;input.value=title;
-    if(required&&i===0)input.required=true;
-    label.innerHTML=`<span class="dot">${icon}</span><span><span class="row-main">${title}</span>${sub?`<span class="row-sub">${sub}</span>`:""}</span>`;
+    input.type="radio";
+    input.name=name;
+    input.value=title;
+    if(i===0) input.required=true;
+
+    label.innerHTML=`<span class="dot">${icon}</span><span>
+      <span class="row-main">${title}</span>
+      ${sub ? `<span class="row-sub">${sub}</span>` : ""}
+    </span>`;
     label.prepend(input);
     root.appendChild(label);
   });
 }
+
+renderRatings(
+  "programRatings",
+  programItems,
+  qualityScale,
+  "تقييم الفقرات",
+  "اكتب ملاحظتك باختصار..."
+);
+
+renderRatings(
+  "impactRatings",
+  impactItems,
+  qualityScale,
+  "أثر البرنامج",
+  "اكتب ملاحظتك باختصار..."
+);
+
 renderList("trackChoices","المسار المهاري",tracks);
 renderList("priorityChoices","أهم جانب للتطوير",priorities);
 
-const skillRoot=document.getElementById("skillRatings");
-skillRoot.appendChild(ratingCard("✦","فائدة المسار","هل حسيت إن محتوى المسار كان مفيدًا لك؟",qualityScale,"تقييم المسار","عندك ملاحظة على محتوى المسار؟"));
-skillRoot.appendChild(ratingCard("⚙","قدرتي على تطبيق ما تعلمته","هل تقدر تستخدم المهارة بنفسك بعد المسار؟",[
-  ["أقدر أطبقها بنفسي","أقدر أطبقها"],
-  ["أقدر على أغلبها","أغلبها"],
-  ["أقدر على الأساسيات","الأساسيات"],
-  ["أحتاج تدريب أكثر","أحتاج تدريب"]
-],"تقييم المسار","عندك ملاحظة أو شيء تحتاج تتدرب عليه أكثر؟"));
-
-renderRatings("trainerRatings",[
-  ["◉","وضوح شرح المدرب","هل كان شرحه سهل وواضح؟"],
-  ["↔","تفاعل المدرب مع الطلاب","هل كان يجاوب ويتفاعل معكم؟"],
-  ["✓","التطبيق العملي أثناء التدريب","هل أعطاكم فرصة تطبقون المهارة بأنفسكم؟"]
-],qualityScale,"تقييم المدرب","عندك ملاحظة على المدرب؟");
-
-renderRatings("faithRatings",[
-  ["♡","عرفت الله وأحببته أكثر","هل حسيت أن اللقاءات قربتك من الله أكثر؟"]
-],impactScale,"الأثر الإيماني","عندك ملاحظة على اللقاءات الإيمانية؟");
-
-renderRatings("teamRatings",teamItems,qualityScale,"تقييم الفريق","عندك ملاحظة على التعامل أو المتابعة؟");
-
-
-const skillExamples={
-  "صناعة المحتوى":{
-    placeholder:"مثال: تصوير مقطع بجودة أفضل أو مونتاج فيديو قصير",
-    hint:"مثال مناسب لمسارك: تصوير • مونتاج • إعداد محتوى لليوتيوب"
-  },
-  "أساسيات الإنجليزية":{
-    placeholder:"مثال: تقديم نفسي بالإنجليزية أو تكوين جملة بسيطة",
-    hint:"مثال مناسب لمسارك: كلمات أساسية • جمل قصيرة • تقديم النفس"
-  },
-  "الإلقاء والخطابة":{
-    placeholder:"مثال: إلقاء كلمة قصيرة بثقة أمام الجمهور",
-    hint:"مثال مناسب لمسارك: الوقوف أمام الجمهور • تنظيم الأفكار • التحكم بالصوت"
-  },
-  "التصميم الجرافيكي":{
-    placeholder:"مثال: تصميم منشور أو إعلان باستخدام Canva",
-    hint:"مثال مناسب لمسارك: تصميم منشور • تنسيق العناصر • اختيار الخطوط والألوان"
-  },
-  "الذكاء الاصطناعي":{
-    placeholder:"مثال: إنشاء صفحة ويب بسيطة أو استخدام الذكاء الاصطناعي في بناء فكرة",
-    hint:"مثال مناسب لمسارك: Vibe Coding • إنشاء صفحة • تطوير فكرة بالذكاء الاصطناعي"
-  }
-};
-
-
-function bindNoteToggles(root=document){
-  root.querySelectorAll(".note-toggle").forEach(btn=>{
-    if(btn.dataset.bound==="1") return;
-    btn.dataset.bound="1";
-    btn.addEventListener("click",()=>{
-      const target=document.getElementById(btn.dataset.noteTarget);
-      if(!target) return;
-      const willOpen=!target.classList.contains("show");
-      target.classList.toggle("show",willOpen);
-      btn.classList.toggle("open",willOpen);
-
-      const text=btn.querySelector(".note-toggle-text");
-      const plus=btn.querySelector(".plus");
-      if(text) text.textContent=willOpen ? "إخفاء الملاحظة" : "إضافة ملاحظة";
-      if(plus) plus.textContent=willOpen ? "−" : "＋";
-
-      if(willOpen){
-        setTimeout(()=>target.querySelector("textarea")?.focus(),80);
-      }
-    });
-  });
-}
-
-bindNoteToggles();
-
-const welcome=document.getElementById("welcome");
-const surveyArea=document.getElementById("surveyArea");
-document.getElementById("startBtn").addEventListener("click",()=>{
-  const selectedComplex=document.querySelector('input[name="welcomeComplex"]:checked');
-  const error=document.getElementById("welcomeError");
-  if(!selectedComplex){
-    error.classList.add("show");
-    return;
-  }
-  error.classList.remove("show");
-  document.getElementById("hiddenName").value=document.getElementById("welcomeName").value.trim();
-  document.getElementById("hiddenComplex").value=selectedComplex.value;
-  welcome.style.display="none";
-  surveyArea.style.display="block";
-  showSection(0);
-});
-
-const form=document.getElementById("surveyForm");
 const skillBlock=document.getElementById("skillBlock");
-const skillTitle=document.getElementById("skillTitle");
-const trainerTitle=document.getElementById("trainerTitle");
+skillBlock.appendChild(document.createElement("div"));
+
+document.getElementById("skillRatings").appendChild(
+  ratingCard(
+    "✦",
+    "فائدة المسار",
+    "بشكل عام، هل المسار كان مفيدًا لك؟",
+    qualityScale,
+    "تقييم المسار",
+    "اكتب ملاحظتك على المسار..."
+  )
+);
+
+document.getElementById("trainerRatings").appendChild(
+  ratingCard(
+    "◉",
+    "وضوح شرح المدرب",
+    "هل كان شرح المدرب سهلًا وواضحًا؟",
+    qualityScale,
+    "تقييم المدرب",
+    "اكتب ملاحظتك على المدرب..."
+  )
+);
 
 function groupSetRequired(container,on){
   const groups={};
@@ -1567,7 +1418,7 @@ function groupSetRequired(container,on){
   });
   Object.values(groups).forEach(group=>{
     group.forEach(r=>r.required=false);
-    if(on&&group.length)group[0].required=true;
+    if(on && group.length) group[0].required=true;
   });
 }
 
@@ -1576,69 +1427,63 @@ document.querySelectorAll('input[name="المسار المهاري"]').forEach(r
     const chosen=document.querySelector('input[name="المسار المهاري"]:checked')?.value;
     skillBlock.classList.toggle("show",!!chosen);
     groupSetRequired(skillBlock,!!chosen);
-    if(chosen){
-      skillTitle.textContent=`تقييم مسار: ${chosen}`;
-      trainerTitle.textContent=`تقييم مدرب مسار: ${chosen}`;
-      const ex=skillExamples[chosen];
-      const inp=document.getElementById("skillLearnedInput");
-      const hint=document.getElementById("skillLearnedHint");
-      if(ex && inp && hint){
-        inp.placeholder=ex.placeholder;
-        hint.textContent=ex.hint;
-      }
-    }
     updateProgress();
   });
 });
 
-const overallLow=document.getElementById("overallLowNote");
-document.querySelectorAll('input[name="التقييم العام"]').forEach(r=>{
-  r.addEventListener("change",updateProgress);
-});
+function bindNoteToggles(){
+  document.querySelectorAll(".note-toggle").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const target=document.getElementById(btn.dataset.noteTarget);
+      if(!target) return;
 
-const developmentDetail=document.getElementById("developmentDetail");
-const selectedDevelopment=document.getElementById("selectedDevelopment");
-document.querySelectorAll('input[name="أهم جانب للتطوير"]').forEach(r=>{
-  r.addEventListener("change",()=>{
-    if(!r.checked)return;
-    selectedDevelopment.textContent="اختيارك: "+r.value;
-    developmentDetail.classList.add("show");
-  });
-});
+      const open=!target.classList.contains("show");
+      target.classList.toggle("show",open);
+      btn.classList.toggle("open",open);
 
-function updateProgress(){
-  const req=[...form.querySelectorAll("[required]")].filter(e=>e.offsetParent!==null);
-  const names=new Set();let total=0,done=0;
-  req.forEach(e=>{
-    if(e.type==="radio")names.add(e.name);
-    else{total++;if(String(e.value||"").trim())done++}
+      const text=btn.querySelector(".note-toggle-text");
+      const plus=btn.querySelector(".plus");
+      if(text) text.textContent=open ? "إخفاء الملاحظة" : "إضافة ملاحظة";
+      if(plus) plus.textContent=open ? "−" : "＋";
+
+      if(open) setTimeout(()=>target.querySelector("textarea")?.focus(),60);
+    });
   });
-  names.forEach(name=>{
-    total++;
-    const radios=[...form.querySelectorAll('input[type="radio"]')].filter(r=>r.name===name&&r.offsetParent!==null);
-    if(radios.some(r=>r.checked))done++;
-  });
-  const p=total?Math.round(done/total*100):0;
-  document.getElementById("progressBar").style.width=p+"%";
-  document.getElementById("progressText").textContent=p+"%";
 }
-form.addEventListener("change",updateProgress);
-form.addEventListener("input",updateProgress);
+bindNoteToggles();
 
+const welcome=document.getElementById("welcome");
+const surveyArea=document.getElementById("surveyArea");
+const form=document.getElementById("surveyForm");
+
+document.getElementById("startBtn").addEventListener("click",()=>{
+  const selectedComplex=document.querySelector('input[name="welcomeComplex"]:checked');
+  const error=document.getElementById("welcomeError");
+
+  if(!selectedComplex){
+    error.classList.add("show");
+    return;
+  }
+
+  error.classList.remove("show");
+  document.getElementById("hiddenName").value=document.getElementById("welcomeName").value.trim();
+  document.getElementById("hiddenComplex").value=selectedComplex.value;
+
+  welcome.style.display="none";
+  surveyArea.style.display="block";
+  showSection(0);
+});
 
 const wizardSections=[...document.querySelectorAll("#surveyForm .section")];
 const wizardSectionNames=[
-  "البرنامج العام",
-  "ماذا استفدت من البرنامج؟",
-  "المسار المهاري",
-  "الأثر الإيماني",
-  "فريق العمل",
-  "رأيك الأخير"
+  "تجربتك في البرنامج",
+  "وش استفدت؟",
+  "المسار ورأيك الأخير"
 ];
 let currentSection=0;
 
 const sectionStepper=document.getElementById("sectionStepper");
-wizardSections.forEach((_,i)=>{
+wizardSections.forEach(()=>{
   const node=document.createElement("div");
   node.className="step-node";
   node.innerHTML='<span class="step-dot"></span>';
@@ -1647,204 +1492,145 @@ wizardSections.forEach((_,i)=>{
 
 function updateStepper(index){
   const nodes=[...sectionStepper.querySelectorAll(".step-node")];
+
   nodes.forEach((node,i)=>{
     node.classList.toggle("done",i<index);
     node.classList.toggle("active",i===index);
   });
-  const name=wizardSectionNames[index] || `القسم ${index+1}`;
-  document.getElementById("stepCaption").innerHTML=
-    `<strong>${name}</strong> · ${index+1} من ${wizardSections.length}`;
-}
 
-function requiredGroupsIn(section){
-  const visibleRequired=[...section.querySelectorAll("[required]")].filter(el=>el.offsetParent!==null);
-  const radioNames=new Set();
-  const plain=[];
-  visibleRequired.forEach(el=>{
-    if(el.type==="radio") radioNames.add(el.name);
-    else plain.push(el);
-  });
-  return {radioNames,plain};
+  document.getElementById("stepCaption").innerHTML=
+    `<strong>${wizardSectionNames[index]}</strong> · ${index+1} من ${wizardSections.length}`;
 }
 
 function sectionIsValid(section){
-  const {radioNames,plain}=requiredGroupsIn(section);
-  for(const el of plain){
-    if(!String(el.value||"").trim()){
+  const required=[...section.querySelectorAll("[required]")].filter(el=>el.offsetParent!==null);
+  const radioNames=new Set();
+
+  for(const el of required){
+    if(el.type==="radio"){
+      radioNames.add(el.name);
+    }else if(!String(el.value||"").trim()){
       el.reportValidity();
       return false;
     }
   }
+
   for(const name of radioNames){
     const radios=[...section.querySelectorAll('input[type="radio"]')]
       .filter(r=>r.name===name && r.offsetParent!==null);
+
     if(radios.length && !radios.some(r=>r.checked)){
       radios[0].reportValidity();
       return false;
     }
   }
+
   return true;
 }
 
 function showSection(index){
   currentSection=Math.max(0,Math.min(index,wizardSections.length-1));
-  wizardSections.forEach((s,i)=>s.classList.toggle("active",i===currentSection));
-  updateStepper(currentSection);
 
-  wizardSections.forEach((s,i)=>{
-    const prev=s.querySelector(".prev-btn");
-    const next=s.querySelector(".next-btn");
-    const counter=s.querySelector(".step-counter");
+  wizardSections.forEach((section,i)=>{
+    section.classList.toggle("active",i===currentSection);
+
+    const prev=section.querySelector(".prev-btn");
+    const next=section.querySelector(".next-btn");
+    const counter=section.querySelector(".step-counter");
+
     if(counter) counter.textContent=`القسم ${i+1} من ${wizardSections.length}`;
     if(prev) prev.disabled=(i===0);
+
     if(next){
       if(i===wizardSections.length-1){
-        next.textContent="إرسال التقييم";
         next.type="submit";
+        next.textContent="إرسال التقييم";
       }else{
-        next.textContent="التالي";
         next.type="button";
+        next.textContent="التالي";
       }
     }
   });
 
-  window.scrollTo({top:0,behavior:"smooth"});
+  updateStepper(currentSection);
   updateProgress();
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 wizardSections.forEach((section,i)=>{
   const prev=section.querySelector(".prev-btn");
   const next=section.querySelector(".next-btn");
 
-  prev?.addEventListener("click",()=>{
-    showSection(i-1);
-  });
+  if(prev) prev.addEventListener("click",()=>showSection(i-1));
 
-  if(i<wizardSections.length-1){
-    next?.addEventListener("click",()=>{
-      if(!sectionIsValid(section)) return;
-      showSection(i+1);
+  if(next && i<wizardSections.length-1){
+    next.addEventListener("click",()=>{
+      if(sectionIsValid(section)) showSection(i+1);
     });
   }
 });
 
-const GOOGLE_SHEETS_ENDPOINT="https://script.google.com/macros/s/AKfycbya9oCAFQmyBppolvJZjqBE2Lk16IhKhBilG3lRlLOW69foXvWCzjSRZpmIruTzUP_L1Q/exec";
+function updateProgress(){
+  const req=[...form.querySelectorAll("[required]")].filter(el=>el.offsetParent!==null);
+  const names=new Set();
+  let total=0,done=0;
 
-function createSubmissionToken(){
-  if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
-  return "rq-" + Date.now() + "-" + Math.random().toString(36).slice(2);
-}
-
-function checkSubmissionStatus(token, attempt=0){
-  return new Promise((resolve,reject)=>{
-    const callbackName="rqStatus_"+Date.now()+"_"+Math.random().toString(36).slice(2);
-    const script=document.createElement("script");
-
-    const cleanup=()=>{
-      try{ delete window[callbackName]; }catch(_){
-        window[callbackName]=undefined;
-      }
-      script.remove();
-    };
-
-    const timeout=setTimeout(()=>{
-      cleanup();
-      if(attempt>=9){
-        reject(new Error("انتهت مهلة التحقق"));
-      }else{
-        setTimeout(()=>{
-          checkSubmissionStatus(token,attempt+1).then(resolve).catch(reject);
-        },900);
-      }
-    },3500);
-
-    window[callbackName]=(result)=>{
-      clearTimeout(timeout);
-      cleanup();
-
-      if(result && result.ok===true){
-        resolve(result);
-      }else if(attempt>=9){
-        reject(new Error(result?.error || "لم يصل تأكيد الحفظ"));
-      }else{
-        setTimeout(()=>{
-          checkSubmissionStatus(token,attempt+1).then(resolve).catch(reject);
-        },900);
-      }
-    };
-
-    script.onerror=()=>{
-      clearTimeout(timeout);
-      cleanup();
-
-      if(attempt>=9){
-        reject(new Error("تعذر الوصول إلى خدمة التحقق"));
-      }else{
-        setTimeout(()=>{
-          checkSubmissionStatus(token,attempt+1).then(resolve).catch(reject);
-        },900);
-      }
-    };
-
-    script.src=
-      GOOGLE_SHEETS_ENDPOINT +
-      "?action=status" +
-      "&token=" + encodeURIComponent(token) +
-      "&callback=" + encodeURIComponent(callbackName) +
-      "&t=" + Date.now();
-
-    document.head.appendChild(script);
+  req.forEach(el=>{
+    if(el.type==="radio"){
+      names.add(el.name);
+    }else{
+      total++;
+      if(String(el.value||"").trim()) done++;
+    }
   });
+
+  names.forEach(name=>{
+    total++;
+    const radios=[...form.querySelectorAll('input[type="radio"]')]
+      .filter(r=>r.name===name && r.offsetParent!==null);
+    if(radios.some(r=>r.checked)) done++;
+  });
+
+  const p=total ? Math.round(done/total*100) : 0;
+  document.getElementById("progressBar").style.width=p+"%";
+  document.getElementById("progressText").textContent=p+"%";
 }
+
+form.addEventListener("change",updateProgress);
+form.addEventListener("input",updateProgress);
 
 form.addEventListener("submit",async e=>{
   e.preventDefault();
 
-  // مزامنة بيانات شاشة البداية
-  document.getElementById("hiddenName").value=
-    document.getElementById("welcomeName").value.trim();
-
-  const wc=document.querySelector('input[name="welcomeComplex"]:checked');
-  if(wc) document.getElementById("hiddenComplex").value=wc.value;
-
-  // التحقق من جميع الأقسام
   for(const section of wizardSections){
     if(!sectionIsValid(section)) return;
   }
 
-  const submitBtn=form.querySelector('.section.active .next-btn');
-  const oldText=submitBtn ? submitBtn.textContent : "";
+  document.getElementById("hiddenName").value=document.getElementById("welcomeName").value.trim();
+  const wc=document.querySelector('input[name="welcomeComplex"]:checked');
+  if(wc) document.getElementById("hiddenComplex").value=wc.value;
 
-  if(submitBtn){
-    submitBtn.disabled=true;
-    submitBtn.textContent="جاري حفظ الرد...";
-  }
+  const submitBtn=wizardSections.at(-1).querySelector(".next-btn");
+  const oldText=submitBtn.textContent;
+
+  submitBtn.disabled=true;
+  submitBtn.textContent="جاري حفظ الرد...";
 
   try{
-    const formData=new FormData(form);
-    const payload={};
+    const params=new URLSearchParams();
 
-    for(const [key,value] of formData.entries()){
-      payload[key]=value;
+    for(const [key,value] of new FormData(form).entries()){
+      params.append(key,value);
     }
 
-    // رمز تقني مؤقت للتحقق من نجاح الحفظ فقط.
-    // لا يتم حفظه في Google Sheets.
-    const submissionToken=createSubmissionToken();
-    payload._submissionToken=submissionToken;
-
-    // text/plain + no-cors يجعل Apps Script يستقبل JSON بدون مشكلة CORS.
+    // إرسال بسيط مباشر (application/x-www-form-urlencoded).
+    // بهذه الطريقة تصل القيم داخل e.parameter في Apps Script.
     await fetch(GOOGLE_SHEETS_ENDPOINT,{
       method:"POST",
       mode:"no-cors",
-      headers:{
-        "Content-Type":"text/plain;charset=utf-8"
-      },
-      body:JSON.stringify(payload)
+      body:params,
+      cache:"no-store"
     });
-
-    // لا نظهر النجاح إلا بعد أن يؤكد Apps Script أن الصف حُفظ فعلًا.
-    await checkSubmissionStatus(submissionToken);
 
     surveyArea.style.display="none";
     document.getElementById("success").style.display="block";
@@ -1852,16 +1638,14 @@ form.addEventListener("submit",async e=>{
 
   }catch(err){
     console.error(err);
-
-    if(submitBtn){
-      submitBtn.disabled=false;
-      submitBtn.textContent=oldText || "إرسال التقييم";
-    }
-
-    alert("لم يتم تأكيد حفظ الرد في Google Sheets. حاول مرة أخرى، وإذا تكررت المشكلة راجع «عمليات التنفيذ» في Apps Script.");
+    submitBtn.disabled=false;
+    submitBtn.textContent=oldText;
+    alert("تعذر إرسال الرد. تأكد من اتصال الإنترنت ثم حاول مرة أخرى.");
   }
 });
 
+surveyArea.style.display="none";
+showSection(0);
 </script>
 </body>
 </html>
