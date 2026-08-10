@@ -1144,7 +1144,7 @@ textarea::placeholder,input[type=text]::placeholder{
     </div>
   </div>
 
-  <form id="surveyForm" action="https://script.google.com/macros/s/AKfycbya9oCAFQmyBppolvJZjqBE2Lk16IhKhBilG3lRlLOW69foXvWCzjSRZpmIruTzUP_L1Q/exec" method="POST" target="submissionFrame" accept-charset="UTF-8">
+  <form id="surveyForm">
     <input type="hidden" id="hiddenName" name="اسم الطالب" value="">
     <input type="hidden" id="hiddenComplex" name="المجمع" value="">
 <section class="section">
@@ -1317,7 +1317,6 @@ textarea::placeholder,input[type=text]::placeholder{
 
 </section>
   </form>
-  <iframe name="submissionFrame" id="submissionFrame" style="display:none" title="إرسال الرد"></iframe>
 </div>
 
 <section class="success" id="success">
@@ -1729,13 +1728,79 @@ wizardSections.forEach((section,i)=>{
   }
 });
 
-let submissionPending=false;
-let submissionTimer=null;
-let submitBtnRef=null;
-let submitBtnOldText="";
+const GOOGLE_SHEETS_ENDPOINT="https://script.google.com/macros/s/AKfycbya9oCAFQmyBppolvJZjqBE2Lk16IhKhBilG3lRlLOW69foXvWCzjSRZpmIruTzUP_L1Q/exec";
 
-form.addEventListener("submit",e=>{
-  // مزامنة بيانات البداية قبل الإرسال
+function createSubmissionToken(){
+  if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return "rq-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+}
+
+function checkSubmissionStatus(token, attempt=0){
+  return new Promise((resolve,reject)=>{
+    const callbackName="rqStatus_"+Date.now()+"_"+Math.random().toString(36).slice(2);
+    const script=document.createElement("script");
+
+    const cleanup=()=>{
+      try{ delete window[callbackName]; }catch(_){
+        window[callbackName]=undefined;
+      }
+      script.remove();
+    };
+
+    const timeout=setTimeout(()=>{
+      cleanup();
+      if(attempt>=9){
+        reject(new Error("انتهت مهلة التحقق"));
+      }else{
+        setTimeout(()=>{
+          checkSubmissionStatus(token,attempt+1).then(resolve).catch(reject);
+        },900);
+      }
+    },3500);
+
+    window[callbackName]=(result)=>{
+      clearTimeout(timeout);
+      cleanup();
+
+      if(result && result.ok===true){
+        resolve(result);
+      }else if(attempt>=9){
+        reject(new Error(result?.error || "لم يصل تأكيد الحفظ"));
+      }else{
+        setTimeout(()=>{
+          checkSubmissionStatus(token,attempt+1).then(resolve).catch(reject);
+        },900);
+      }
+    };
+
+    script.onerror=()=>{
+      clearTimeout(timeout);
+      cleanup();
+
+      if(attempt>=9){
+        reject(new Error("تعذر الوصول إلى خدمة التحقق"));
+      }else{
+        setTimeout(()=>{
+          checkSubmissionStatus(token,attempt+1).then(resolve).catch(reject);
+        },900);
+      }
+    };
+
+    script.src=
+      GOOGLE_SHEETS_ENDPOINT +
+      "?action=status" +
+      "&token=" + encodeURIComponent(token) +
+      "&callback=" + encodeURIComponent(callbackName) +
+      "&t=" + Date.now();
+
+    document.head.appendChild(script);
+  });
+}
+
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+
+  // مزامنة بيانات شاشة البداية
   document.getElementById("hiddenName").value=
     document.getElementById("welcomeName").value.trim();
 
@@ -1744,61 +1809,59 @@ form.addEventListener("submit",e=>{
 
   // التحقق من جميع الأقسام
   for(const section of wizardSections){
-    if(!sectionIsValid(section)){
-      e.preventDefault();
-      return;
-    }
+    if(!sectionIsValid(section)) return;
   }
 
-  submitBtnRef=form.querySelector('.section.active .next-btn');
-  submitBtnOldText=submitBtnRef ? submitBtnRef.textContent : "";
+  const submitBtn=form.querySelector('.section.active .next-btn');
+  const oldText=submitBtn ? submitBtn.textContent : "";
 
-  if(submitBtnRef){
-    submitBtnRef.disabled=true;
-    submitBtnRef.textContent="جاري حفظ الرد...";
+  if(submitBtn){
+    submitBtn.disabled=true;
+    submitBtn.textContent="جاري حفظ الرد...";
   }
 
-  submissionPending=true;
+  try{
+    const formData=new FormData(form);
+    const payload={};
 
-  clearTimeout(submissionTimer);
-  submissionTimer=setTimeout(()=>{
-    if(!submissionPending) return;
-
-    submissionPending=false;
-    if(submitBtnRef){
-      submitBtnRef.disabled=false;
-      submitBtnRef.textContent=submitBtnOldText || "إرسال التقييم";
+    for(const [key,value] of formData.entries()){
+      payload[key]=value;
     }
 
-    alert("لم يصل تأكيد حفظ الرد من Google Sheets. حاول مرة أخرى، وإذا تكررت المشكلة راجع عمليات التنفيذ في Apps Script.");
-  },30000);
+    // رمز تقني مؤقت للتحقق من نجاح الحفظ فقط.
+    // لا يتم حفظه في Google Sheets.
+    const submissionToken=createSubmissionToken();
+    payload._submissionToken=submissionToken;
 
-  // لا نستخدم fetch هنا.
-  // المتصفح سيرسل النموذج مباشرة إلى Apps Script داخل iframe مخفي.
-});
+    // text/plain + no-cors يجعل Apps Script يستقبل JSON بدون مشكلة CORS.
+    await fetch(GOOGLE_SHEETS_ENDPOINT,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{
+        "Content-Type":"text/plain;charset=utf-8"
+      },
+      body:JSON.stringify(payload)
+    });
 
-window.addEventListener("message",event=>{
-  const data=event.data;
+    // لا نظهر النجاح إلا بعد أن يؤكد Apps Script أن الصف حُفظ فعلًا.
+    await checkSubmissionStatus(submissionToken);
 
-  if(!submissionPending || !data || data.source!=="rabee-qolob15") return;
-
-  submissionPending=false;
-  clearTimeout(submissionTimer);
-
-  if(data.ok===true){
     surveyArea.style.display="none";
     document.getElementById("success").style.display="block";
     window.scrollTo({top:0,behavior:"smooth"});
-    return;
-  }
 
-  if(submitBtnRef){
-    submitBtnRef.disabled=false;
-    submitBtnRef.textContent=submitBtnOldText || "إرسال التقييم";
-  }
+  }catch(err){
+    console.error(err);
 
-  alert("لم يتم حفظ الرد: " + (data.error || "حدث خطأ غير معروف."));
+    if(submitBtn){
+      submitBtn.disabled=false;
+      submitBtn.textContent=oldText || "إرسال التقييم";
+    }
+
+    alert("لم يتم تأكيد حفظ الرد في Google Sheets. حاول مرة أخرى، وإذا تكررت المشكلة راجع «عمليات التنفيذ» في Apps Script.");
+  }
 });
+
 </script>
 </body>
 </html>
