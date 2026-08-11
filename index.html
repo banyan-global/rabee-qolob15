@@ -1257,7 +1257,7 @@ textarea::placeholder,input[type=text]::placeholder{
 </main>
 
 <script>
-const GOOGLE_SHEETS_ENDPOINT="https://script.google.com/macros/s/AKfycbya9oCAFQmyBppolvJZjqBE2Lk16IhKhBilG3lRlLOW69foXvWCzjSRZpmIruTzUP_L1Q/exec";
+const GOOGLE_SHEETS_ENDPOINT="https://script.google.com/macros/s/AKfycbxh4zPX0ihEHLinorHkIyvUSSqW7OGUpA7RHHqB681SScepfO_p8O2N7aEuYA_Ketvu6A/exec";
 
 const qualityScale=[
   ["ممتاز جدًا","ممتاز جدًا"],
@@ -1616,32 +1616,52 @@ form.addEventListener("submit",async e=>{
   submitBtn.disabled=true;
   submitBtn.textContent="جاري حفظ الرد...";
 
-  try{
-    const params=new URLSearchParams();
+  // إرسال عبر iframe مخفي بدل fetch — طريقة أضمن، لا تتأثر
+  // بأي قيود CORS أو sandbox داخل بيئة Apps Script، ولا تحتاج قراءة الرد.
+  let hiddenFrame=document.getElementById("hiddenSubmitFrame");
+  if(!hiddenFrame){
+    hiddenFrame=document.createElement("iframe");
+    hiddenFrame.name="hiddenSubmitFrame";
+    hiddenFrame.id="hiddenSubmitFrame";
+    hiddenFrame.style.display="none";
+    document.body.appendChild(hiddenFrame);
+  }
 
-    for(const [key,value] of new FormData(form).entries()){
-      params.append(key,value);
-    }
+  const tempForm=document.createElement("form");
+  tempForm.method="POST";
+  tempForm.action=GOOGLE_SHEETS_ENDPOINT;
+  tempForm.target="hiddenSubmitFrame";
+  tempForm.style.display="none";
 
-    // إرسال بسيط مباشر (application/x-www-form-urlencoded).
-    // بهذه الطريقة تصل القيم داخل e.parameter في Apps Script.
-    await fetch(GOOGLE_SHEETS_ENDPOINT,{
-      method:"POST",
-      mode:"no-cors",
-      body:params,
-      cache:"no-store"
-    });
+  for(const [key,value] of new FormData(form).entries()){
+    const input=document.createElement("input");
+    input.type="hidden";
+    input.name=key;
+    input.value=value;
+    tempForm.appendChild(input);
+  }
 
+  document.body.appendChild(tempForm);
+
+  hiddenFrame.addEventListener("load",function onLoad(){
+    hiddenFrame.removeEventListener("load",onLoad);
+    document.body.removeChild(tempForm);
     surveyArea.style.display="none";
     document.getElementById("success").style.display="block";
     window.scrollTo({top:0,behavior:"smooth"});
+  },{once:true});
 
-  }catch(err){
-    console.error(err);
-    submitBtn.disabled=false;
-    submitBtn.textContent=oldText;
-    alert("تعذر إرسال الرد. تأكد من اتصال الإنترنت ثم حاول مرة أخرى.");
-  }
+  tempForm.submit();
+
+  // شبكة أمان: لو ما اشتغل حدث load خلال 6 ثوانٍ (بعض المتصفحات لا تطلقه دومًا)
+  setTimeout(()=>{
+    if(document.body.contains(tempForm)){
+      document.body.removeChild(tempForm);
+      surveyArea.style.display="none";
+      document.getElementById("success").style.display="block";
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+  },6000);
 });
 
 surveyArea.style.display="none";
